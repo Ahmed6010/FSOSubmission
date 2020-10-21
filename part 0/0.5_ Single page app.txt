@@ -1,0 +1,16 @@
+title 0.5: Single page app
+
+note over browser:
+The event handler prevents the default handling of form submit
+create a new note and adds it to the notes list
+rerender the note list,send the new note to the server
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: HTTP status code 201 created
+
+
+
+
+
+
