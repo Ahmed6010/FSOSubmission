@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+//import axios from 'axios'
+import dataService from '../Modules/dataService'
 
 const Filter = ({func}) => {
   return (
@@ -26,21 +27,29 @@ const PersonForm  = ({submitFunc, name, num, func1, func2}) => {
   ) 
 }
 
-const Persons = ({persons,oldName}) =>{
-  return (
-  persons.map(person => {
-    if(person.name.startsWith(oldName) || person.name.toLowerCase().startsWith(oldName)) 
-      return <SinglePerson person={person}/>
-    return null
-  })
-  )
-}
+// const Persons = ({persons,oldName}) =>{
+//   return (
+//   persons.map(person => {
+//     if(person.name.startsWith(oldName) || person.name.toLowerCase().startsWith(oldName)) 
+//       return <SinglePerson person={person}/>
+//     return null
+//   })
+//   )
+// }
 
-const SinglePerson = ({person}) =>{
-  return (
-    <p key={person.id}>{person.name} {person.number}</p>
-  )
-}
+// const SinglePerson = ({person}) =>{
+//   const handleDelete = () => {
+//     dataService
+//       .delet(person.id)
+//       //.then(() => {setPersons(persons.filter(n => n.id !== id))})
+//   }
+//   return (
+//     <div>
+//       <span key={person.id}>{person.name} {person.number}   </span>
+//       <button onClick={handleDelete}>delete</button>
+//     </div>  
+//   )
+// }
 
 const App = () => {
   const [ persons, setPersons] = useState([])
@@ -59,10 +68,21 @@ const App = () => {
 
     const nameExist = persons.filter(person => person.name === newName)
     
-    if(nameExist.length !== 0)
-        alert(`${newName} is already added to phonebook`)
+    if(nameExist.length !== 0) {
+        //alert(`${newName} is already added to phonebook`)
+        const existId = nameExist[0].id;
+        if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one ?`)){
+          dataService
+            .update(existId,{...nameObject, id:existId})
+          setPersons(persons.map(person =>  person.id !== existId ? person : {...nameObject, id:existId} ))
+          setNewName('')
+          setNewNum('')  
+        }
+      }
     else{
-      setPersons(persons.concat(nameObject))    /// axios.post nameObject
+      setPersons(persons.concat(nameObject))    
+      dataService
+        .create(nameObject)
       setNewName('')
       setNewNum('')
     } 
@@ -71,13 +91,19 @@ const App = () => {
   const handleNameInput = event => setNewName(event.target.value)
   const handleNumInput = event => setNewNum(event.target.value)
   const handleSearchInput = event => setOldName(event.target.value)
-
+  const handleDelete = (e,person) => {
+    e.preventDefault();
+    if (window.confirm(`Delete ${person.name} ?`)) { 
+      dataService
+        .delet(person.id)
+        .then(() => {setPersons(persons.filter(n => n.id !== person.id))})
+    }
+    
+  }
+  
   useEffect( () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then( response => {
-        setPersons(response.data);
-      })
+    dataService
+      .getAll().then( data => {setPersons(data)})
   }, [])
 
   return (
@@ -92,7 +118,17 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons persons={persons} oldName={oldName}/>  
+      {/* <Persons persons={persons} oldName={oldName}/> */}
+      <ul>
+        {persons.map(person => {
+          if(person.name.startsWith(oldName) || person.name.toLowerCase().startsWith(oldName)) {
+            return <li>
+              <span key={person.id}>{person.name} {person.number}   </span>
+              <button onClick={(e) => handleDelete(e,person)}>delete</button>
+            </li>}
+          return null                                    
+        })}
+      </ul>
     </div>
   )
 }
