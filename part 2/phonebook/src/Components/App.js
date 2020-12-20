@@ -61,10 +61,9 @@ const App = () => {
 
   const addName = (event)=>{
     event.preventDefault()
-    const nameObject = {
+    const newPerson = {
         name : newName,
-        number : newNum,
-        id : persons.length + 1
+        number : newNum
     }
 
     const nameExist = persons.find(person => person.name === newName)     
@@ -74,7 +73,7 @@ const App = () => {
         const existId = nameExist.id;
         if (window.confirm(`${nameExist.name} is already added to phonebook, replace the old number with a new one ?`)){
           dataService
-            .update(existId,{...nameObject, id:existId})
+            .update(existId,{...newPerson, id:existId})
             .then(returnedPerson => {
               setSuccessMessage(`Updated ${returnedPerson.name}`)
               setPersons(persons.map(person =>  person.id !== existId ? person : returnedPerson ))
@@ -95,9 +94,9 @@ const App = () => {
       }
     // adding new person  
     else{
-      setPersons(persons.concat(nameObject))    
+      setPersons(persons.concat(newPerson))    
       dataService
-        .create(nameObject)
+        .create(newPerson)
         .then(returnedPerson => {
           setSuccessMessage(`Added ${returnedPerson.name}`)  
           setNewName('')
