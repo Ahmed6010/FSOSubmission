@@ -1,0 +1,22 @@
+GET http://localhost:3001/api/persons/
+
+###
+GET http://localhost:3001/api/persons/627c34baa95aa6bb258bc795
+
+###
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Arini Tn", 
+    "number": "00084"
+}
+
+###
+PUT http://localhost:3001/api/persons/627d71ead8565d5426b8cafe
+content-type: application/json
+
+{
+    "name": "Arg di", 
+    "number": "6111"
+}
