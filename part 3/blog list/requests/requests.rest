@@ -1,0 +1,24 @@
+GET http://localhost:3003/api/blogs/
+
+###
+GET http://localhost:3003/api/blogs/627c34baa95aa6bb258bc795
+
+###
+POST http://localhost:3003/api/blogs/ HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Insta post",
+    "author": "El Amine",
+    "url": "Senhendi",
+    "likes": 9
+}
+
+###
+PUT http://localhost:3003/api/blogs/627d71ead8565d5426b8cafe
+content-type: application/json
+
+{
+    "name": "Arg di", 
+    "number": "6111"
+}
