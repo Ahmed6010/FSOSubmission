@@ -3,25 +3,38 @@ const Blog = require('../models/blog')
 
 
 
-blogsRouter.get('/', (request, response) => {
-  Blog
-    .find({})
-    .then(blogs => {
-      response.json(blogs)
-    })
+blogsRouter.get('/', async (request, response) => {
+  const blog = await Blog.find({})
+  response.json(blog)
 })
 
 
-blogsRouter.post('/', (request, response, next) => {
-  const blog = new Blog(request.body)
+blogsRouter.post('/', async (request, response) => {
+  const body = request.body
+  if(!body.likes) body.likes = 0
 
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
-    .catch(error => next(error))
+  if( !body.title && !body.url )
+    response.status(400).end()
+  else{
+    const blog = new Blog(body)
+
+    const savedBlog = await blog.save()
+    response.status(201).json(savedBlog)
+  }
 })
 
+blogsRouter.delete('/:id', async (request, response) => {
+  const id = request.params.id
+  await Blog.findByIdAndRemove(id)
+  response.status(204).end()
+})
+
+blogsRouter.put('/:id', async (request, response) => {
+  const id = request.params.id
+  const { likes } = request.body
+
+  const updatedBlog = await Blog.findByIdAndUpdate(id, { likes }, { new: true })
+  response.status(200).json(updatedBlog)
+})
 
 module.exports = blogsRouter
