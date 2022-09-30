@@ -1,0 +1,59 @@
+GET http://localhost:3003/api/users/
+
+###
+GET http://localhost:3003/api/blogs/627c34baa95aa6bb258bc795
+
+###
+POST http://localhost:3003/api/users/ HTTP/1.1
+content-type: application/json
+
+{
+    "username": "Midou",
+    "name": "Midou mid",
+    "password": "Midou"
+}
+
+###
+PUT http://localhost:3003/api/blogs/627d71ead8565d5426b8cafe
+content-type: application/json
+
+{
+    "name": "Arg di", 
+    "number": "6111"
+}
+
+###
+POST http://localhost:3003/api/blogs/ HTTP/1.1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNpZG91IiwiaWQiOiI2MzA5ZmIwNWJjZDY3MmQ4MTRkMTllZDMiLCJpYXQiOjE2NjE2MDQ3MTgsImV4cCI6MTY2MTYwODMxOH0.lxJc32WzeGetuP_nBxy_5BwE3YPtOH_osybluZrly2Q
+
+{
+    "title": "app Mobile",
+    "author": "Younsi",
+    "url": "http://www.mobile-app.com",
+    "likes": 22
+}
+
+###
+POST http://localhost:3003/api/login/ HTTP/1.1
+content-type: application/json
+
+{
+    "username": "Wangi_T",
+    "password": "tonewa"
+}
+
+
+###
+POST http://localhost:3003/api/login/ HTTP/1.1
+content-type: application/json
+
+{
+    "username": "Sidou",
+    "password": "Sidou"
+}
+
+###
+DELETE http://localhost:3003/api/blogs/630a13a67487626d5eb3c3f4 HTTP/1.1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNpZG91IiwiaWQiOiI2MzA5ZmIwNWJjZDY3MmQ4MTRkMTllZDMiLCJpYXQiOjE2NjE2MDQ3MTgsImV4cCI6MTY2MTYwODMxOH0.lxJc32WzeGetuP_nBxy_5BwE3YPtOH_osybluZrly2Q
