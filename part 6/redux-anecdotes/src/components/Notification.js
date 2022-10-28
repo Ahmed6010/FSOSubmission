@@ -7,7 +7,8 @@ const Notification = () => {
     border: 'solid',
     padding: 10,
     borderWidth: 1,
-    display: displayValue
+    display: displayValue,
+    marginBottom: 10
   }
   
   return (
